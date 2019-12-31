@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intuit.developer.helloworld.client.OAuth2PlatformClientFactory;
 import com.intuit.developer.helloworld.helper.QBOServiceHelper;
+import com.intuit.developer.helloworld.service.PushingToDbService;
 import com.intuit.ipp.data.CompanyInfo;
 import com.intuit.ipp.data.Error;
 import com.intuit.ipp.exception.FMSException;
@@ -38,6 +40,9 @@ public class QBOController {
 	
 	@Autowired
     public QBOServiceHelper helper;
+	
+	@Autowired
+	PushingToDbService pdbs;
 
 	
 	private static final Logger logger = Logger.getLogger(QBOController.class);
@@ -50,6 +55,7 @@ public class QBOController {
      * @param session
      * @return
      */
+	
 	@ResponseBody
     @RequestMapping("/getCompanyInfo")
     public String callQBOCompanyInfo(HttpSession session) {
@@ -67,9 +73,17 @@ public class QBOController {
     		DataService service = helper.getDataService(realmId, accessToken);
 			
 			// get all companyinfo
-			String sql = "select * from companyinfo";
-			QueryResult queryResult = service.executeQuery(sql);
-			return processResponse(failureMsg, queryResult);
+//			String sql = "select * from companyinfo";
+//			QueryResult queryResult = service.executeQuery(sql);
+			
+			//String sql1 = "select * from invoice MAXRESULTS 5";
+		//	QueryResult queryResult1 = service.executeQuery(sql1);
+//			pdbs.putInvoice(queryResult1.getEntities(),realmId);
+			
+			String sql2 = "select * from purchase";
+			QueryResult queryResult2 = service.executeQuery(sql2);
+	//		pdbs.putBills(queryResult2.getEntities(), realmId);
+			return processResponse(failureMsg, queryResult2);
 			
 		}
 	        /*
@@ -117,11 +131,11 @@ public class QBOController {
 
 	private String processResponse(String failureMsg, QueryResult queryResult) {
 		if (!queryResult.getEntities().isEmpty() && queryResult.getEntities().size() > 0) {
-			CompanyInfo companyInfo = (CompanyInfo) queryResult.getEntities().get(0);
-			logger.info("Companyinfo -> CompanyName: " + companyInfo.getCompanyName());
+//			CompanyInfo companyInfo = (CompanyInfo) queryResult.getEntities().get(0);
+//			logger.info("Companyinfo -> CompanyName: " + companyInfo.getCompanyName());
 			ObjectMapper mapper = new ObjectMapper();
 			try {
-				String jsonInString = mapper.writeValueAsString(companyInfo);
+				String jsonInString = mapper.writeValueAsString(queryResult.getEntities());
 				return jsonInString;
 			} catch (JsonProcessingException e) {
 				logger.error("Exception while getting company info ", e);
