@@ -5,10 +5,12 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.intuit.developer.helloworld.service.PushingToDbService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -28,7 +30,10 @@ public class HomeController {
 	
 	@Autowired
 	OAuth2PlatformClientFactory factory;
-	    
+	@Autowired
+	PushingToDbService pdbs;
+
+
 	@RequestMapping("/")
 	public String home() {
 		return "home";
@@ -44,10 +49,14 @@ public class HomeController {
 	 * @return
 	 */
 	@RequestMapping("/connectToQuickbooks")
-	public View connectToQuickbooks(HttpSession session) {
+	public View connectToQuickbooks(HttpSession session,@RequestParam(name="userId", required = true) String userId) {
 		logger.info("inside connectToQuickbooks ");
 		OAuth2Config oauth2Config = factory.getOAuth2Config();
-		
+
+		String realmId = (String)session.getAttribute("realmId");
+
+		pdbs.addUserCompany("",userId,realmId);
+
 		String redirectUri = factory.getPropertyValue("OAuth2AppRedirectUri"); 
 		
 		String csrf = oauth2Config.generateCSRFToken();

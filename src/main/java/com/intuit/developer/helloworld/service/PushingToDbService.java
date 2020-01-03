@@ -32,5 +32,9 @@ public class PushingToDbService {
 		System.out.println(response);
 
 	}
-	
+
+	public void addUserCompany(Object object,String userId,String realmId){
+		HttpEntity<Object> request= new HttpEntity<>(object);
+	Object response = restTemplateConfig.postForObject("/companyInfo?userId="+ userId + "?companyId="+realmId,request,Object.class);
+	}
 }
