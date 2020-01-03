@@ -80,9 +80,9 @@ public class QBOController {
 		//	QueryResult queryResult1 = service.executeQuery(sql1);
 //			pdbs.putInvoice(queryResult1.getEntities(),realmId);
 			
-			String sql2 = "select * from purchase";
+			String sql2 = "select * from Account";
 			QueryResult queryResult2 = service.executeQuery(sql2);
-	//		pdbs.putBills(queryResult2.getEntities(), realmId);
+			pdbs.addChartOfAccounts(queryResult2.getEntities(), realmId);
 			return processResponse(failureMsg, queryResult2);
 			
 		}
@@ -109,7 +109,7 @@ public class QBOController {
 		            DataService service = helper.getDataService(realmId, accessToken);
 					
 					// get all companyinfo
-					String sql = "select * from companyinfo";
+					String sql = "select * from Account";
 					QueryResult queryResult = service.executeQuery(sql);
 					return processResponse(failureMsg, queryResult);
 					

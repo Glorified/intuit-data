@@ -25,5 +25,12 @@ public class PushingToDbService {
 		Object response  = restTemplateConfig.postForObject("/addBills?companyId="+realmId, request, Object.class);
 		System.out.println(response.toString());
 	}
+
+	public void addChartOfAccounts(Object object,String realmId){
+		HttpEntity<Object> request = new HttpEntity<>(object);
+		Object response = restTemplateConfig.postForObject("http://localhost:8081/addAccounts?companyId="+realmId,request,Object.class);
+		System.out.println(response);
+
+	}
 	
 }
