@@ -38,7 +38,10 @@ dependencies {
     compile("log4j:log4j:1.2.17")
     compile (group: 'ant', name: 'ant', version: '1.7.0')
     testCompile('org.springframework.boot:spring-boot-starter-test')
-  
+   // compile("com.github.loggly.log4jSyslogWriter64k:com.github.loggly.log4jSyslogWriter64k:2.0.0")
+  	compile("io.springfox:springfox-swagger2:2.9.2")
+  	compile("io.springfox:springfox-swagger-ui:2.9.2")
+  	
 }
 
 wrapper {

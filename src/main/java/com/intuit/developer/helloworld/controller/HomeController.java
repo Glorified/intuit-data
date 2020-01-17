@@ -2,10 +2,10 @@ package com.intuit.developer.helloworld.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import javax.servlet.http.HttpSession;
 
-import com.intuit.developer.helloworld.service.PushingToDbService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +15,7 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.intuit.developer.helloworld.client.OAuth2PlatformClientFactory;
+import com.intuit.developer.helloworld.service.PushingToDbService;
 import com.intuit.oauth2.config.OAuth2Config;
 import com.intuit.oauth2.config.Scope;
 import com.intuit.oauth2.exception.InvalidRequestException;
@@ -54,9 +55,14 @@ public class HomeController {
 		OAuth2Config oauth2Config = factory.getOAuth2Config();
 
 		String realmId = (String)session.getAttribute("realmId");
+		session.setAttribute("userId", userId);
 
-		pdbs.addUserCompany("",userId,realmId);
-
+		/*
+		 * CompletableFuture.runAsync(() -> { pdbs.addUserCompany("",userId,realmId);
+		 * 
+		 * });
+		 */
+		
 		String redirectUri = factory.getPropertyValue("OAuth2AppRedirectUri"); 
 		
 		String csrf = oauth2Config.generateCSRFToken();

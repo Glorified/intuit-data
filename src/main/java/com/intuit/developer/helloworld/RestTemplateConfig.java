@@ -30,6 +30,6 @@ public class RestTemplateConfig {
           .build();
         return new RestTemplate(new ClientHttpRequestFactory());*/
     	
-        return builder.rootUri("http://localhost:8081/").build();
+        return builder.rootUri("http://localhost:8082/").build();
     }
 }
